@@ -1,9 +1,10 @@
 package JGame.Events;
 
-import JGame.GameObject.GameObject;
+import JGame.Util.CollisionMap;
 
 public class CollisionEvent{
 
-    public void collide(GameObject main, Class hits){
+    public void collidesWith(String reference, final Runnable func){
+        CollisionMap.set(reference, true, func);
     }
 }

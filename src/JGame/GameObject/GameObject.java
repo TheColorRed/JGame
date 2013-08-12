@@ -29,6 +29,7 @@ public class GameObject extends JPanel{
     protected int x = 0, y = 0;
     protected Room room;
     protected int startX = 0, startY = 0;
+    protected String reference = "";
     // Preset Actions
     public CreateAction create = new CreateAction();
     public DestroyAction destroy;
@@ -45,18 +46,16 @@ public class GameObject extends JPanel{
     public int moveSpeedX = 0, moveSpeedY = 0;
     public boolean markedForDeletion = false;
 
-    public GameObject(Sprite sprite, Room room){
+    public GameObject(String reference, Sprite sprite, Room room){
         this.sprite = sprite;
         this.room = room;
         this.move = new MoveAction(this.room, this);
         this.destroy = new DestroyAction(this.room, this);
+        this.reference = reference;
 
         this.keyboard = new KeyboardEvent(this.room);
         this.mouse = new MouseEvent(this.room);
         this.custevt = new CustomEvent(this.room);
-    }
-
-    public GameObject(){
     }
 
     public void setSolid(boolean isSolid){
@@ -87,6 +86,14 @@ public class GameObject extends JPanel{
         }else{
             return false;
         }
+    }
+
+    public void setReference(String reference){
+        this.reference = reference;
+    }
+
+    public String getReference(){
+        return this.reference;
     }
 
     @Override

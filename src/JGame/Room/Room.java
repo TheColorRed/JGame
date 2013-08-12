@@ -2,6 +2,7 @@ package JGame.Room;
 
 import JGame.Game.Game;
 import JGame.GameObject.GameObject;
+import JGame.Util.CollisionMap;
 import JGame.Util.CustomEventMap;
 import JGame.Util.KeyboardMap;
 import JGame.Util.Mapping;
@@ -9,6 +10,7 @@ import JGame.Util.MouseMap;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +24,6 @@ public class Room extends JPanel implements Runnable{
     ArrayList<GameObject> gameObjects = new ArrayList<>();
     protected int width = Game.width, height = Game.height;
     public static int CENTERX = 0, CENTERY = 0;
-    
     private Image dbImage;
     private Graphics dbg;
 
@@ -99,6 +100,42 @@ public class Room extends JPanel implements Runnable{
     }
 
     /**
+     * Tests for collision events and performs action if one is found
+     */
+    public void collisionEventTests(){
+        for(GameObject go : this.gameObjects){
+            Rectangle rect1 = new Rectangle(
+                    go.getX(),
+                    go.getY(),
+                    go.getWidth(),
+                    go.getHeight());
+            for(GameObject go2 : this.gameObjects){
+                if(go2.getReference().equals(go.getReference())){
+                    continue;
+                }
+                Rectangle rect2 = new Rectangle(
+                        go2.getX(),
+                        go2.getY(),
+                        go2.getWidth(),
+                        go2.getHeight());
+                if(rect1.intersects(rect2)){
+                    for(Map.Entry ap : CollisionMap.map.entrySet()){
+                        Mapping mp = (Mapping)ap.getValue();
+                        String key = ap.getKey().toString();
+                        if(go.getReference().equals(key)){
+                            System.out.println("Key: "+key);
+                            System.out.println(go.getReference());
+                            System.out.println(go2.getReference());
+                            mp.run();
+                            //CollisionMap.map.remove(key);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Tests for custom events and performs action if one is found
      */
     protected void customEventTests(){
@@ -109,9 +146,6 @@ public class Room extends JPanel implements Runnable{
                 CustomEventMap.map.remove(ap.getKey().toString());
             }
         }
-    }
-
-    public void collisionEventTests(){
     }
 
     protected void moveXY(GameObject go, double delta){
@@ -257,7 +291,7 @@ public class Room extends JPanel implements Runnable{
         this.paintComponent(dbg);
         g.drawImage(this.dbImage, 0, 0, this);
     }
-    
+
     /**
      *
      * @param g

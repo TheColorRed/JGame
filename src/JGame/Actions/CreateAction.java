@@ -6,13 +6,13 @@ import JGame.Room.Room;
 
 public class CreateAction extends Action{
 
-    public GameObject create(Sprite sprite, Room room){
-        GameObject obj = new GameObject(sprite, room);
+    public GameObject create(String reference, Sprite sprite, Room room){
+        GameObject obj = new GameObject(reference, sprite, room);
         return obj;
     }
 
-    public GameObject createAt(Sprite sprite, Room room, int x, int y){
-        GameObject obj = new GameObject(sprite, room);
+    public GameObject createAt(String reference, Sprite sprite, Room room, int x, int y){
+        GameObject obj = new GameObject(reference, sprite, room);
         room.addGameObjectAt(obj, x, y);
         return obj;
     }
