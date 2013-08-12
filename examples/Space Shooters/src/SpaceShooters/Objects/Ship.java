@@ -11,7 +11,7 @@ public class Ship extends GameObject{
     protected long lastFired = 0;
 
     public Ship(Sprite sprite, Room room){
-        super(sprite, room);
+        super("ship", sprite, room);
 
         keyboard.keyPress("UP", new Runnable(){
             @Override
@@ -48,6 +48,7 @@ public class Ship extends GameObject{
                 }
 
                 final GameObject laser = Ship.this.create.createAt(
+                        "laser",
                         new Sprite("/media/images/laser.png"),
                         Ship.this.room,
                         Ship.this.getX() + (Ship.this.getWidth() / 2) - 3,

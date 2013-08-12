@@ -27,6 +27,7 @@ public final class Room1 extends Room{
     public void setupFonts(){
         GameFont font = new GameFont("/media/fonts/future.ttf", 40);
         GameObject go = new GameObject(
+                "level",
                 new Sprite(font.getFont(), "LEVEL   1", Color.black),
                 this);
         this.addGameObjectAt(go, 10, 10);

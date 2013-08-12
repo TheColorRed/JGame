@@ -7,9 +7,14 @@ import JGame.Room.Room;
 public class Enemy extends GameObject{
 
     public Enemy(Sprite sprite, Room room){
-        super(sprite, room);
+        super("enemy", sprite, room);
 
-        //collide.collide("Enemy", null);
+        collide.collidesWith("laser", new Runnable(){
+            @Override
+            public void run(){
+                Enemy.this.destroy.destroyGameObject();
+            }
+        });
 
     }
 }
