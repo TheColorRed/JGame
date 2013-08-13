@@ -63,7 +63,7 @@ public final class Room1 extends Room{
     }
 
     protected void moveEnemy(final Enemy enemy){
-        enemy.move.moveToY(Game.height, Math2.random(3, 8), new Runnable(){
+        enemy.move.moveToY(Game.height, Math2.random(3, 5), new Runnable(){
             @Override
             public void run(){
                 Room1.this.setEnemyLocation(enemy);
