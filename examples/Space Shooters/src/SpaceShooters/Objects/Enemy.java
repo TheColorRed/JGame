@@ -13,7 +13,7 @@ public class Enemy extends GameObject{
             @Override
             public void run(){
                 destroy.destroyGameObject();
-                getColliededWith().destroy.destroyGameObject();
+                getCollidedWith().destroy.destroyGameObject();
             }
         });
 
