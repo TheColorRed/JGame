@@ -30,6 +30,7 @@ public class GameObject extends JPanel{
     protected Room room;
     protected int startX = 0, startY = 0;
     protected String reference = "";
+    protected GameObject collidedWith = null;
     // Preset Actions
     public CreateAction create = new CreateAction();
     public DestroyAction destroy;
@@ -134,5 +135,13 @@ public class GameObject extends JPanel{
 
     public boolean getLeaveScreen(){
         return this.canLeaveScreen;
+    }
+
+    public GameObject getColliededWith(){
+        return this.collidedWith;
+    }
+
+    public void setColliededWith(GameObject go){
+        this.collidedWith = go;
     }
 }
