@@ -121,7 +121,7 @@ public class Room extends JPanel implements Runnable{
                         String key = ap.getKey().toString();
                         if(key.equals(ref)){
                             Mapping mp = (Mapping)ap.getValue();
-                            go.setColliededWith(go2);
+                            go.setCollidedWith(go2);
                             mp.run();
                         }
                     }

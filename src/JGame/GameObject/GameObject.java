@@ -137,11 +137,11 @@ public class GameObject extends JPanel{
         return this.canLeaveScreen;
     }
 
-    public GameObject getColliededWith(){
+    public GameObject getCollidedWith(){
         return this.collidedWith;
     }
 
-    public void setColliededWith(GameObject go){
+    public void setCollidedWith(GameObject go){
         this.collidedWith = go;
     }
 }
