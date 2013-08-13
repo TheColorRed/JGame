@@ -12,7 +12,8 @@ public class Enemy extends GameObject{
         collide.collidesWith("laser", new Runnable(){
             @Override
             public void run(){
-                Enemy.this.destroy.destroyGameObject();
+                destroy.destroyGameObject();
+                getColliededWith().destroy.destroyGameObject();
             }
         });
 
