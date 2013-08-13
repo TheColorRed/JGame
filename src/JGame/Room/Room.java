@@ -110,28 +110,23 @@ public class Room extends JPanel implements Runnable{
                     go.getWidth(),
                     go.getHeight());
             for(GameObject go2 : this.gameObjects){
-                if(go2.getReference().equals(go.getReference())){
-                    continue;
-                }
                 Rectangle rect2 = new Rectangle(
                         go2.getX(),
                         go2.getY(),
                         go2.getWidth(),
                         go2.getHeight());
+                String ref = go2.getReference();
                 if(rect1.intersects(rect2)){
-                    for(Map.Entry ap : CollisionMap.map.entrySet()){
-                        Mapping mp = (Mapping)ap.getValue();
+                    for(Map.Entry ap : go.collide.getMap().entrySet()){
                         String key = ap.getKey().toString();
-                        if(go.getReference().equals(key)){
-                            System.out.println("Key: "+key);
-                            System.out.println(go.getReference());
-                            System.out.println(go2.getReference());
+                        if(key.equals(ref)){
+                            Mapping mp = (Mapping)ap.getValue();
                             mp.run();
-                            //CollisionMap.map.remove(key);
                         }
                     }
                 }
             }
+
         }
     }
 
