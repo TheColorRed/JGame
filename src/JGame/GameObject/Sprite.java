@@ -9,7 +9,6 @@ import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -25,6 +24,10 @@ import javax.swing.ImageIcon;
 public class Sprite{
 
     protected BufferedImage sprite;
+
+    public Sprite(){
+
+    }
 
     public Sprite(String filename){
         URL loc = this.getClass().getResource(filename);
@@ -83,4 +86,14 @@ public class Sprite{
     public int getHeight(){
         return this.sprite.getHeight(null);
     }
+
+    public void drawRect(int w, int h, Color color){
+        BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.createGraphics();
+        g.setColor(color);
+        g.fillRect(0, 0, h, h);
+        g.dispose();
+        this.sprite = image;
+    }
+
 }

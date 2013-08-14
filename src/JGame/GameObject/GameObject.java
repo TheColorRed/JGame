@@ -8,6 +8,7 @@ import JGame.Events.CustomEvent;
 import JGame.Events.KeyboardEvent;
 import JGame.Events.MouseEvent;
 import JGame.Room.Room;
+import JGame.Util.Physics;
 import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -40,6 +41,8 @@ public class GameObject extends JPanel{
     public KeyboardEvent keyboard;
     public MouseEvent mouse;
     public CustomEvent custevt;
+    //
+    public Physics physics = new Physics();
     // X/Y Movement settings
     public boolean needsToMoveX = false, needsToMoveY = false;
     public int moveAmountX = 0, moveAmountY = 0;

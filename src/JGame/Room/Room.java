@@ -2,7 +2,6 @@ package JGame.Room;
 
 import JGame.Game.Game;
 import JGame.GameObject.GameObject;
-import JGame.Util.CollisionMap;
 import JGame.Util.CustomEventMap;
 import JGame.Util.KeyboardMap;
 import JGame.Util.Mapping;
