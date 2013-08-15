@@ -11,16 +11,31 @@ public class Physics{
         this.mass = mass;
     }
 
-    public void setTime(double time){
+    public void setSeconds(double time){
         this.time = time;
     }
 
+    public double getTime(){
+        return this.time * Room.gameTime;
+    }
+
     public double getDistance(){
-        return 0.5 * Room.getGravity() * Math.pow(this.time * Room.gameTime, 2);
+        return 0.5 * Room.getGravity() * Math.pow(this.getTime(), 2);
     }
 
     public double getVelocity(){
-        return Room.getGravity() * (this.time * Room.gameTime);
+        return Room.getGravity() * this.getTime();
+    }
+
+    public double getSpeed(){
+        return this.getDistance() / this.getTime();
+    }
+
+    public double getVY(){
+        //vy = - vbounce - 1/2 g t2
+        //double vy = 0 + 0.5 * Room.getGravity() * Math.pow(this.time * Room.gameTime, 2);
+        double vy = -(this.getSpeed() - (0.5 * Room.getGravity() * Math.pow(this.getTime(), 2)));
+        return vy;
     }
 
     public double getMass(){

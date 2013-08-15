@@ -121,6 +121,14 @@ public class GameObject extends JPanel{
         return this.x;
     }
 
+    public int getBottomY(){
+        return this.y + this.getHeight();
+    }
+
+    public int getBottomX(){
+        return this.x + this.getHeight();
+    }
+
     public void setY(int y){
         this.y = y;
     }
@@ -128,6 +136,14 @@ public class GameObject extends JPanel{
     @Override
     public int getY(){
         return this.y;
+    }
+
+    public int getRightY(){
+        return this.y + this.getWidth();
+    }
+
+    public int getRightX(){
+        return this.x + this.getWidth();
     }
 
     public Image getSprite(){

@@ -9,6 +9,7 @@ import java.awt.Color;
 public class Room1 extends Room{
 
     protected final GameObject item;
+    final TimeRegulator tr = new TimeRegulator(0);
 
     public Room1(){
         Sprite rect = new Sprite();
@@ -17,19 +18,18 @@ public class Room1 extends Room{
         item = new GameObject("rect", rect, this);
 
         this.addGameObjectAt(item, 100, 10);
-        item.physics.setTime(0);
+        item.physics.setSeconds(0);
         item.setMass(50);
         this.drop();
     }
 
     public void drop(){
-        final TimeRegulator tr = new TimeRegulator(0);
         item.iteration.set("drop", new Runnable(){
             @Override
             public void run(){
-                item.physics.setTime(tr.secondsPassed());
+                item.physics.setSeconds(tr.secondsPassed());
                 double dist = item.physics.getDistance();
-                if(dist <= 500){
+                if(item.getBottomY() < 500){
                     item.move.jumpTo(100, (int)dist);
                 }else{
                     item.iteration.remove("drop");
@@ -40,12 +40,18 @@ public class Room1 extends Room{
     }
 
     public void bounce(){
+
         item.iteration.set("bounce", new Runnable(){
             @Override
             public void run(){
+                item.physics.setSeconds(tr.secondsPassed());
                 //mgh=1/2 m v^2
-                float mgh = (float)(0.5 * item.getMass() * Math.pow(item.physics.getVelocity(), 2));
-                System.out.println(mgh);
+                //vy = 0 + 1/2 g t2
+                //float mgh = (float)(0.5 * item.getMass() * Math.pow(item.physics.getVelocity(), 2));
+                double vy = item.physics.getVY();
+                System.out.println(vy);
+                item.move.moveToY((int)vy, (int)(item.physics.getSpeed() * 0.5));
+                item.iteration.remove("bounce");
             }
         });
     }
