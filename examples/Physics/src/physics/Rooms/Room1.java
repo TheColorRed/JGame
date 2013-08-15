@@ -20,6 +20,7 @@ public class Room1 extends Room{
         this.addGameObjectAt(item, 100, 10);
         item.physics.setSeconds(0);
         item.setMass(50);
+        item.physics.setForce(1000);
         this.drop();
     }
 
@@ -29,8 +30,9 @@ public class Room1 extends Room{
             public void run(){
                 item.physics.setSeconds(tr.secondsPassed());
                 double dist = item.physics.getDistance();
+                double force = item.physics.getHorizontalDistance();
                 if(item.getBottomY() < 500){
-                    item.move.jumpTo(100, (int)dist);
+                    item.move.jumpTo((int)force, (int)dist);
                 }else{
                     item.iteration.remove("drop");
                     bounce();
@@ -40,7 +42,6 @@ public class Room1 extends Room{
     }
 
     public void bounce(){
-
         item.iteration.set("bounce", new Runnable(){
             @Override
             public void run(){

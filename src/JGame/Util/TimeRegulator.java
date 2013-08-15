@@ -18,6 +18,11 @@ public class TimeRegulator{
         long diffNanos = now - startTime;
         return TimeUnit.NANOSECONDS.toMillis(diffNanos);
     }
+    
+    public void reset(){
+        this.lastTick = 0L;
+        this.startTime = System.nanoTime();
+    }
 
     public float secondsPassed(){
         long now = System.nanoTime();
