@@ -25,6 +25,8 @@ public class Room extends JPanel implements Runnable{
     public static int CENTERX = 0, CENTERY = 0;
     private Image dbImage;
     private Graphics dbg;
+    private static float gravity = 9.8f;
+    public static long gameTime = 0;
 
     /*
      * This runs the main thread for the current room.
@@ -59,6 +61,7 @@ public class Room extends JPanel implements Runnable{
             // Check for custom events
             this.customEventTests();
             // Redraw all game objects
+            this.iterationEventTests();
             for(GameObject go : gameObjects){
                 // Move objects along X/Y axis
                 this.moveXY(go, delta);
@@ -68,8 +71,18 @@ public class Room extends JPanel implements Runnable{
             // Remove all game objects that have been marked to be destroyed
             this.removeMarked();
             try{
-                Thread.sleep((lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000);
+                Room.gameTime = (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000;
+                Thread.sleep(Room.gameTime);
             }catch(Exception e){
+            }
+        }
+    }
+
+    protected void iterationEventTests(){
+        for(GameObject go : this.gameObjects){
+            for(Map.Entry ap : go.iteration.getMap().entrySet()){
+                Mapping mp = (Mapping)ap.getValue();
+                mp.run();
             }
         }
     }
@@ -126,7 +139,6 @@ public class Room extends JPanel implements Runnable{
                     }
                 }
             }
-
         }
     }
 
@@ -326,5 +338,13 @@ public class Room extends JPanel implements Runnable{
     @Override
     public int getHeight(){
         return this.height;
+    }
+
+    public void setGravity(float gravity){
+        Room.gravity = gravity;
+    }
+
+    public static float getGravity(){
+        return Room.gravity;
     }
 }

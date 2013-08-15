@@ -5,6 +5,7 @@ import JGame.Actions.DestroyAction;
 import JGame.Actions.MoveAction;
 import JGame.Events.CollisionEvent;
 import JGame.Events.CustomEvent;
+import JGame.Events.IterationEvent;
 import JGame.Events.KeyboardEvent;
 import JGame.Events.MouseEvent;
 import JGame.Room.Room;
@@ -37,10 +38,11 @@ public class GameObject extends JPanel{
     public DestroyAction destroy;
     public MoveAction move;
     // Preset Events
-    public CollisionEvent collide = new CollisionEvent();
-    public KeyboardEvent keyboard;
-    public MouseEvent mouse;
-    public CustomEvent custevt;
+    public final CollisionEvent collide = new CollisionEvent();
+    public final IterationEvent iteration = new IterationEvent();
+    public final KeyboardEvent keyboard;
+    public final MouseEvent mouse;
+    public final CustomEvent custevt;
     //
     public Physics physics = new Physics();
     // X/Y Movement settings
@@ -146,5 +148,13 @@ public class GameObject extends JPanel{
 
     public void setCollidedWith(GameObject go){
         this.collidedWith = go;
+    }
+
+    public void setMass(double mass){
+        this.physics.setMass(mass);
+    }
+
+    public double getMass(){
+        return this.physics.getMass();
     }
 }
