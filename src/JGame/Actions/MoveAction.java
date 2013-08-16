@@ -34,6 +34,10 @@ public class MoveAction extends Action{
         this._moveToY(y, speed, complete);
     }
 
+    public void moveToY(int y, double time){
+
+    }
+
     public void moveToY(int y, int speed, Runnable complete){
         this._moveToY(y, speed, complete);
     }

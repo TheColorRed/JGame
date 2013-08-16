@@ -6,6 +6,7 @@ import JGame.Util.CustomEventMap;
 import JGame.Util.KeyboardMap;
 import JGame.Util.Mapping;
 import JGame.Util.MouseMap;
+import JGame.Util.TimeRegulator;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -14,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -27,6 +29,8 @@ public class Room extends JPanel implements Runnable{
     private Graphics dbg;
     private static float gravity = 9.8f;
     public static long gameTime = 0;
+    protected long startTime = System.nanoTime();
+    protected final TimeRegulator secondsReg = new TimeRegulator(1000);
 
     /*
      * This runs the main thread for the current room.
@@ -40,6 +44,9 @@ public class Room extends JPanel implements Runnable{
         final int TARGET_FPS = 60;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
         long lastFpsTime = 0;
+
+
+
         while(true){
             long now = System.nanoTime();
             long updateLength = now - lastLoopTime;
@@ -51,29 +58,48 @@ public class Room extends JPanel implements Runnable{
                 lastFpsTime = 0;
             }
 
+            this.updateGame(delta);
+            this.repaint();
 
-            // Check for key press events
-            this.keyboardEventTests();
-            // Check for mouse events
-            this.mouseEventTests();
-            // Check for collision events
-            this.collisionEventTests();
-            // Check for custom events
-            this.customEventTests();
-            // Redraw all game objects
-            this.iterationEventTests();
-            for(GameObject go : gameObjects){
-                // Move objects along X/Y axis
-                this.moveXY(go, delta);
-                // Test object for screen leaveable
-                this.screenLeaveCheck(go);
-            }
-            // Remove all game objects that have been marked to be destroyed
-            this.removeMarked();
             try{
                 Room.gameTime = (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000;
+                System.out.println(Room.gameTime);
                 Thread.sleep(Room.gameTime);
             }catch(Exception e){
+            }
+        }
+    }
+
+    protected void updateGame(double delta){
+        // Check for key press events
+        this.keyboardEventTests();
+        // Check for mouse events
+        this.mouseEventTests();
+        // Check for collision events
+        this.collisionEventTests();
+        // Check for custom events
+        this.customEventTests();
+        this.iterationEventTests();
+        this.secondsEventTests();
+        // Redraw all game objects
+        for(GameObject go : gameObjects){
+            // Move objects along X/Y axis
+            this.moveXY(go, delta);
+            // Test object for screen leaveable
+            this.screenLeaveCheck(go);
+        }
+        // Remove all game objects that have been marked to be destroyed
+        this.removeMarked();
+    }
+
+    protected void secondsEventTests(){
+        if(!this.secondsReg.checkTime()){
+            return;
+        }
+        for(GameObject go : this.gameObjects){
+            for(Map.Entry ap : go.siteration.getMap().entrySet()){
+                Mapping mp = (Mapping)ap.getValue();
+                mp.run();
             }
         }
     }
@@ -313,7 +339,7 @@ public class Room extends JPanel implements Runnable{
                 GameObject go = gameObjects.get(i);
                 g.drawImage(go.getSprite(), go.getX(), go.getY(), this);
             }
-            this.repaint();
+            //this.repaint();
         }catch(Exception e){
         }
     }
@@ -346,5 +372,11 @@ public class Room extends JPanel implements Runnable{
 
     public static float getGravity(){
         return Room.gravity;
+    }
+
+    public long getTickCount(){
+        long now = System.nanoTime();
+        long diffNanos = now - startTime;
+        return TimeUnit.NANOSECONDS.toMillis(diffNanos);
     }
 }

@@ -8,6 +8,7 @@ import JGame.Events.CustomEvent;
 import JGame.Events.IterationEvent;
 import JGame.Events.KeyboardEvent;
 import JGame.Events.MouseEvent;
+import JGame.Events.SecondsIterationEvent;
 import JGame.Room.Room;
 import JGame.Util.Physics;
 import java.awt.Image;
@@ -40,6 +41,7 @@ public class GameObject extends JPanel{
     // Preset Events
     public final CollisionEvent collide = new CollisionEvent();
     public final IterationEvent iteration = new IterationEvent();
+    public final SecondsIterationEvent siteration = new SecondsIterationEvent();
     public final KeyboardEvent keyboard;
     public final MouseEvent mouse;
     public final CustomEvent custevt;
