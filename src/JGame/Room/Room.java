@@ -9,8 +9,10 @@ import JGame.Util.MouseMap;
 import JGame.Util.TimeRegulator;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,12 +27,20 @@ public class Room extends JPanel implements Runnable{
     ArrayList<GameObject> gameObjects = new ArrayList<>();
     protected int width = Game.width, height = Game.height;
     public static int CENTERX = 0, CENTERY = 0;
-    private Image dbImage;
-    private Graphics dbg;
+    private BufferedImage dbImage;
+    private Graphics2D dbg;
     private static float gravity = 9.8f;
     public static long gameTime = 0;
     protected long startTime = System.nanoTime();
     protected final TimeRegulator secondsReg = new TimeRegulator(1000);
+
+    public Room(){
+        Thread thread = new Thread(this);
+        //this.paintImmediately(0, 0, Game.width, Game.height);
+        thread.start();
+        dbImage = new BufferedImage(Game.width, Game.height, BufferedImage.TYPE_INT_ARGB);
+        //this.dbImage = createImage(Game.width, Game.height);
+    }
 
     /*
      * This runs the main thread for the current room.
@@ -50,6 +60,9 @@ public class Room extends JPanel implements Runnable{
         while(true){
             long now = System.nanoTime();
             long updateLength = now - lastLoopTime;
+            if(updateLength < OPTIMAL_TIME){
+                continue;
+            }
             lastLoopTime = now;
             double delta = updateLength / ((double)OPTIMAL_TIME);
 
@@ -60,10 +73,10 @@ public class Room extends JPanel implements Runnable{
 
             this.updateGame(delta);
             this.repaint();
-
             try{
                 Room.gameTime = (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000;
-                System.out.println(Room.gameTime);
+                //System.out.println(delta);
+                //System.out.println(Room.gameTime);
                 Thread.sleep(Room.gameTime);
             }catch(Exception e){
             }
@@ -231,11 +244,6 @@ public class Room extends JPanel implements Runnable{
         }
     }
 
-    public Room(){
-        Thread thread = new Thread(this);
-        thread.start();
-    }
-
     public void removeMarked(){
         Iterator objs = gameObjects.iterator();
         while(objs.hasNext()){
@@ -319,10 +327,14 @@ public class Room extends JPanel implements Runnable{
 
     @Override
     public void paint(Graphics g){
-        this.dbImage = createImage(this.getWidth(), this.getHeight());
-        this.dbg = dbImage.getGraphics();
+        dbg = this.dbImage.createGraphics();
+        //clear offscreen buffer image.
+        dbg.fillRect(0, 0, this.getWidth(), this.getHeight());
+        //render a new frame to offscreen buffer
         this.paintComponent(dbg);
+        //render offscreen buffer to component
         g.drawImage(this.dbImage, 0, 0, this);
+        dbg.dispose();
     }
 
     /**
@@ -335,8 +347,8 @@ public class Room extends JPanel implements Runnable{
     public void paintComponent(Graphics g){
         try{
             g.drawImage(bg, 0, 0, this);
-            for(int i = 0; i < gameObjects.size(); i++){
-                GameObject go = gameObjects.get(i);
+            for(GameObject go : this.gameObjects){
+                //GameObject go = gameObjects.get(i);
                 g.drawImage(go.getSprite(), go.getX(), go.getY(), this);
             }
             //this.repaint();

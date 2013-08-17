@@ -50,8 +50,8 @@ public class Room1 extends Room{
                 //vy = 0 + 1/2 g t2
                 //float mgh = (float)(0.5 * item.getMass() * Math.pow(item.physics.getVelocity(), 2));
                 double vy = item.physics.getVY();
-                System.out.println(vy);
-                item.move.moveToY((int)vy, (int)(item.physics.getSpeed() * 0.5));
+                System.out.println((int)(Math.sqrt(item.physics.getSpeed())));
+                item.move.moveToY((int)vy, (int)(Math.sqrt(item.physics.getSpeed())));
                 item.iteration.remove("bounce");
             }
         });

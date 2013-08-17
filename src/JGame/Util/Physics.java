@@ -38,13 +38,13 @@ public class Physics{
     }
 
     public double getSpeed(){
-        return this.getDistance() / this.getTime();
+        return this.getDistance() / this.time; // this.getTime();
     }
 
     public double getVY(){
         //vy = - vbounce - 1/2 g t2
         //double vy = 0 + 0.5 * Room.getGravity() * Math.pow(this.time * Room.gameTime, 2);
-        double vy = -(this.getSpeed() - (0.5 * Room.getGravity() * Math.pow(this.getTime(), 2)));
+        double vy = (this.getSpeed() - (0.5 * Room.getGravity() * Math.pow(this.getTime(), 2)));
         return vy;
     }
 
