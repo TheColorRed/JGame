@@ -1,4 +1,4 @@
-package JGame.GameObject;
+/*package JGame.GameObject;
 
 import java.awt.Font;
 import javax.swing.JLabel;
@@ -13,3 +13,4 @@ public class Label extends JLabel{
         this.setLocation(x, y);
     }
 }
+*/

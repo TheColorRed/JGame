@@ -1,4 +1,4 @@
-package JGame.Actions;
+/*package JGame.Actions;
 
 import JGame.GameObject.GameObject;
 import JGame.GameObject.Sprite;
@@ -28,3 +28,4 @@ public class CreateAction extends Action{
         return obj;
     }
 }
+*/

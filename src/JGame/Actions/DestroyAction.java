@@ -1,4 +1,4 @@
-package JGame.Actions;
+/*package JGame.Actions;
 
 import JGame.GameObject.GameObject;
 import JGame.Room.Room;
@@ -17,3 +17,4 @@ public class DestroyAction extends Action{
         obj.markedForDeletion = true;
     }
 }
+*/

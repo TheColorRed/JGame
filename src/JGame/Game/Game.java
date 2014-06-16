@@ -45,7 +45,6 @@ public class Game extends JFrame{
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        
         Game.width = width - (this.getInsets().left + this.getInsets().right);
         Game.height = height - (this.getInsets().top + this.getInsets().bottom);
         Game.CENTERX = (int)(width / 2.0);
@@ -56,7 +55,11 @@ public class Game extends JFrame{
         room.setSize(Game.width, Game.height);
         room.setPreferredSize(new Dimension(Game.width, Game.height));
         rooms[0] = room;
-        this.add(rooms[0]);
+        //this.add(rooms[0]);
         this.repaint();
+    }
+
+    public void start(){
+        rooms[0].start();
     }
 }

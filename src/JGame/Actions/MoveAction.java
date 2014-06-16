@@ -1,4 +1,4 @@
-package JGame.Actions;
+/*package JGame.Actions;
 
 import JGame.GameObject.GameObject;
 import JGame.Room.Room;
@@ -92,3 +92,4 @@ public class MoveAction extends Action{
         return this.moveDirection;
     }
 }
+*/

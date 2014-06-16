@@ -1,4 +1,4 @@
-package JGame.GameObject;
+/*package JGame.GameObject;
 
 import JGame.Actions.CreateAction;
 import JGame.Actions.DestroyAction;
@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 /**
  *
  * @author Ryan
- */
+ *//*
 public class GameObject extends JPanel{
 
     protected Sprite sprite;
@@ -176,3 +176,4 @@ public class GameObject extends JPanel{
         return this.physics.getMass();
     }
 }
+*/

@@ -1,4 +1,4 @@
-package JGame.Events;
+/*package JGame.Events;
 
 import JGame.Room.Room;
 import JGame.Util.KeyboardMap;
@@ -34,3 +34,4 @@ public class KeyboardEvent{
         });
     }
 }
+*/

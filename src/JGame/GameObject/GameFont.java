@@ -1,4 +1,4 @@
-package JGame.GameObject;
+/*package JGame.GameObject;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -30,3 +30,4 @@ public class GameFont extends Font{
         return lbl;
     }
 }
+*/

@@ -1,4 +1,4 @@
-package JGame.GameObject;
+/*package JGame.GameObject;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -20,7 +20,7 @@ import javax.swing.ImageIcon;
 /**
  *
  * @author Ryan
- */
+ *//*
 public class Sprite{
 
     protected BufferedImage sprite;
@@ -97,3 +97,4 @@ public class Sprite{
     }
 
 }
+*/
