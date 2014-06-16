@@ -2,6 +2,7 @@ package JGame.Room;
 
 import JGame.Component;
 import JGame.Components.SpriteRenderer;
+import JGame.Components.Transform;
 import JGame.Game.Game;
 import JGame.GameObject;
 import JGame.Util.KeyboardMap;
@@ -9,6 +10,7 @@ import JGame.Util.Mapping;
 import JGame.Util.MouseMap;
 import JGame.Util.Time;
 import JGame.Util.TimeRegulator;
+import JGame.Util.Vector2;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -23,7 +25,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class Room extends JFrame implements Runnable{
 
@@ -76,6 +77,7 @@ public class Room extends JFrame implements Runnable{
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
+            Time.deltaTime = delta / amountOfTicks;
             while(delta >= 1){
                 tick();
                 updates++;
@@ -86,8 +88,8 @@ public class Room extends JFrame implements Runnable{
 
             if(System.currentTimeMillis() - timer > 1000){
                 //timer += 1000;
+                //Time.deltaTime = delta;
                 timer = System.currentTimeMillis();
-                Time.deltaTime = delta;
                 System.out.println("FPS: " + frames + " TICKS: " + updates);
                 frames = 0;
                 updates = 0;
@@ -101,6 +103,9 @@ public class Room extends JFrame implements Runnable{
             HashMap<Class, Component> hm = go.getComponents();
             for(Map.Entry pairs : hm.entrySet()){
                 Component comp = (Component)pairs.getValue();
+                if(comp.gameObject == null){
+                    comp.setGameObject(go);
+                }
                 comp.start();
             }
         }
@@ -112,20 +117,27 @@ public class Room extends JFrame implements Runnable{
             HashMap<Class, Component> hm = go.getComponents();
             for(Map.Entry pairs : hm.entrySet()){
                 Component comp = (Component)pairs.getValue();
+                if(comp.gameObject == null){
+                    comp.setGameObject(go);
+                }
                 comp.update();
             }
         }
     }
 
+    // Render the images
     protected void render(){
+        bufferStrategy = this.getBufferStrategy();
         if(bufferStrategy == null){
             this.createBufferStrategy(3);
             bufferStrategy = this.getBufferStrategy();
         }
         Graphics g = bufferStrategy.getDrawGraphics();
+        super.paint(g);
         for(GameObject go : gameObjects){
             Image sprite = go.getComponent(SpriteRenderer.class).getSprite();
-            g.drawImage(sprite, 100, 100, this);
+            Vector2 pos = go.getComponent(Transform.class).getPosition();
+            g.drawImage(sprite, (int)pos.x, (int)pos.y, this);
         }
         g.dispose();
         bufferStrategy.show();
@@ -133,7 +145,6 @@ public class Room extends JFrame implements Runnable{
     }
 
     public void addGameObject(GameObject gameObject){
-
         gameObjects.add(gameObject);
     }
 
