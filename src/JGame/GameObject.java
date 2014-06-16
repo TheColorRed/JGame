@@ -1,8 +1,6 @@
 package JGame;
 
-import JGame.Components.SpriteRenderer;
 import JGame.Components.Transform;
-import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -13,7 +11,7 @@ public class GameObject extends Object{
     protected HashMap<Class, Component> components = new HashMap();
 
     public GameObject(){
-        //this.addComponent(Transform.class);
+        this.addComponent(Transform.class);
     }
 
     public <T extends Component> T addComponent(Class<T> component){
@@ -43,14 +41,4 @@ public class GameObject extends Object{
         }
         return null;
     }
-
-    /*public <T extends Component> Component getComponent(Class<T> component){
-     for(Class c : this.components){
-     if(c.equals(component)){
-     //return this.getClass().cast();
-     System.out.println("Here");
-     }
-     }
-     return null;
-     }*/
 }

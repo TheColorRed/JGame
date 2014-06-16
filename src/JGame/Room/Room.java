@@ -42,6 +42,7 @@ public class Room extends JFrame implements Runnable{
     public boolean running = true;
     public double delta = 0;
     private BufferStrategy bufferStrategy;
+    public double fixedTimeStep = 0.02;
 
     public Room(){
         super("Game");
@@ -79,16 +80,15 @@ public class Room extends JFrame implements Runnable{
             lastTime = now;
             Time.deltaTime = delta / amountOfTicks;
             while(delta >= 1){
-                tick();
+                fixedTick();
                 updates++;
                 delta--;
             }
+            tick();
             render();
             frames++;
 
             if(System.currentTimeMillis() - timer > 1000){
-                //timer += 1000;
-                //Time.deltaTime = delta;
                 timer = System.currentTimeMillis();
                 System.out.println("FPS: " + frames + " TICKS: " + updates);
                 frames = 0;
@@ -125,6 +125,20 @@ public class Room extends JFrame implements Runnable{
         }
     }
 
+    // Fixed Update
+    protected void fixedTick(){
+        for(GameObject go : this.gameObjects){
+            HashMap<Class, Component> hm = go.getComponents();
+            for(Map.Entry pairs : hm.entrySet()){
+                Component comp = (Component)pairs.getValue();
+                if(comp.gameObject == null){
+                    comp.setGameObject(go);
+                }
+                comp.fixedUpdate();
+            }
+        }
+    }
+
     // Render the images
     protected void render(){
         bufferStrategy = this.getBufferStrategy();
@@ -136,8 +150,8 @@ public class Room extends JFrame implements Runnable{
         super.paint(g);
         for(GameObject go : gameObjects){
             Image sprite = go.getComponent(SpriteRenderer.class).getSprite();
-            Vector2 pos = go.getComponent(Transform.class).getPosition();
-            g.drawImage(sprite, (int)pos.x, (int)pos.y, this);
+            Vector2 pos = go.getComponent(Transform.class).position;
+            g.drawImage(sprite, (int)pos.getX(), (int)pos.getY(), this);
         }
         g.dispose();
         bufferStrategy.show();

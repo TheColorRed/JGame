@@ -9,4 +9,8 @@ public class Object{
     public void update(){
 
     }
+
+    public void fixedUpdate(){
+
+    }
 }
