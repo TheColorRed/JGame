@@ -1,6 +1,6 @@
 package JGame.Events;
 
-import JGame.Room.Room;
+import JGame.Game.Room;
 import JGame.Util.MouseMap;
 import java.awt.event.MouseListener;
 

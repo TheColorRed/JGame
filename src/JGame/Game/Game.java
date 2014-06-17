@@ -1,6 +1,5 @@
 package JGame.Game;
 
-import JGame.Room.Room;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;

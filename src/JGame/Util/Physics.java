@@ -1,6 +1,6 @@
 package JGame.Util;
 
-import JGame.Room.Room;
+import JGame.Game.Room;
 
 public class Physics{
 

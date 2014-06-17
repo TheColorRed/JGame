@@ -1,4 +1,4 @@
-package JGame.Room;
+package JGame.Game;
 
 import JGame.Component;
 import JGame.Components.SpriteRenderer;

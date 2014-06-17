@@ -1,6 +1,6 @@
 package JGame;
 
-import JGame.Room.Room;
+import JGame.Game.Room;
 
 public class Instantiate{
 
