@@ -12,7 +12,7 @@ public class GameObject extends Object{
     protected HashMap<Class, Component> components = new HashMap();
 
     public GameObject(String spriteFileLocation){
-        this.addComponent(Transform.class);
+        this();
         this.addComponent(SpriteRenderer.class).sprite.setSprite(spriteFileLocation);
     }
 
