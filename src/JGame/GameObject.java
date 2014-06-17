@@ -1,5 +1,6 @@
 package JGame;
 
+import JGame.Components.SpriteRenderer;
 import JGame.Components.Transform;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +10,11 @@ import java.util.logging.Logger;
 public class GameObject extends Object{
 
     protected HashMap<Class, Component> components = new HashMap();
+
+    public GameObject(String spriteFileLocation){
+        this.addComponent(Transform.class);
+        this.addComponent(SpriteRenderer.class).sprite.setSprite(spriteFileLocation);
+    }
 
     public GameObject(){
         this.addComponent(Transform.class);

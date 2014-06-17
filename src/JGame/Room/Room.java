@@ -74,11 +74,14 @@ public class Room extends JFrame implements Runnable{
         long timer = System.currentTimeMillis();
         int updates = 0;
         int frames = 0;
+        long startTime = System.currentTimeMillis();
         while(running){
             long now = System.nanoTime();
+            long milliNow = System.currentTimeMillis();
             delta += (now - lastTime) / ns;
             lastTime = now;
             Time.deltaTime = delta / amountOfTicks;
+            Time.time = (milliNow - startTime) / 1000;
             while(delta >= 1){
                 fixedTick();
                 updates++;
@@ -88,8 +91,8 @@ public class Room extends JFrame implements Runnable{
             render();
             frames++;
 
-            if(System.currentTimeMillis() - timer > 1000){
-                timer = System.currentTimeMillis();
+            if(milliNow - timer > 1000){
+                timer = milliNow;
                 System.out.println("FPS: " + frames + " TICKS: " + updates);
                 frames = 0;
                 updates = 0;
@@ -149,7 +152,7 @@ public class Room extends JFrame implements Runnable{
         Graphics g = bufferStrategy.getDrawGraphics();
         super.paint(g);
         for(GameObject go : gameObjects){
-            Image sprite = go.getComponent(SpriteRenderer.class).getSprite();
+            Image sprite = go.getComponent(SpriteRenderer.class).sprite.getSprite();
             Vector2 pos = go.getComponent(Transform.class).position;
             g.drawImage(sprite, (int)pos.getX(), (int)pos.getY(), this);
         }
