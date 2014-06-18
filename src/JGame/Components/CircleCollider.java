@@ -1,7 +1,5 @@
 package JGame.Components;
 
-import JGame.Behavior;
-
-public class CircleCollider extends Behavior{
+public class CircleCollider extends Collider{
 
 }

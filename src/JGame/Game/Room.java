@@ -1,6 +1,8 @@
 package JGame.Game;
 
 import JGame.Component;
+import JGame.Components.BoxCollider;
+import JGame.Components.Collider;
 import JGame.Components.SpriteRenderer;
 import JGame.Components.Transform;
 import JGame.GameObject;
@@ -136,6 +138,10 @@ public class Room extends JFrame implements Runnable{
                 if(comp.gameObject == null){
                     comp.setGameObject(go);
                 }
+                //System.out.println(comp.getClass().getName());
+                if(comp instanceof Collider){
+                    this.testCollisions(go, (Collider)comp);
+                }
                 comp.fixedUpdate();
             }
         }
@@ -151,7 +157,7 @@ public class Room extends JFrame implements Runnable{
         Graphics g = bufferStrategy.getDrawGraphics();
         super.paint(g);
         for(GameObject go : gameObjects){
-            Image sprite = go.getComponent(SpriteRenderer.class).sprite.getSprite();
+            Image sprite = go.getComponent(SpriteRenderer.class).getSprite();
             if(sprite == null){
                 continue;
             }
@@ -165,6 +171,24 @@ public class Room extends JFrame implements Runnable{
 
     public void addGameObject(GameObject gameObject){
         gameObjects.add(gameObject);
+    }
+
+    private void testCollisions(GameObject gameObject, Collider collider){
+        for(GameObject go : this.gameObjects){
+            if(go == gameObject){
+                continue;
+            }
+            HashMap<Class, Component> hm = go.getComponents();
+            for(Map.Entry pairs : hm.entrySet()){
+                Component comp = (Component)pairs.getValue();
+                if(comp instanceof BoxCollider && collider instanceof BoxCollider){
+                    if(((BoxCollider)comp).getRect().intersects(((BoxCollider)collider).getRect())){
+                        comp.onCollision(collider);
+                        collider.onCollision((Collider)comp);
+                    }
+                }
+            }
+        }
     }
 
     /*

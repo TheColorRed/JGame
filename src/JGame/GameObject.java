@@ -1,5 +1,6 @@
 package JGame;
 
+import JGame.Components.Collider;
 import JGame.Components.SpriteRenderer;
 import JGame.Components.Transform;
 import java.util.HashMap;
@@ -10,10 +11,11 @@ import java.util.logging.Logger;
 public class GameObject extends Object{
 
     protected HashMap<Class, Component> components = new HashMap();
+    private String name = "";
 
     public GameObject(String spriteFileLocation){
         this();
-        this.addComponent(SpriteRenderer.class).sprite.setSprite(spriteFileLocation);
+        this.addComponent(SpriteRenderer.class).setSprite(spriteFileLocation);
     }
 
     public GameObject(){
@@ -45,4 +47,13 @@ public class GameObject extends Object{
         }
         return null;
     }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
 }
