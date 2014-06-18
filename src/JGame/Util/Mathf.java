@@ -15,7 +15,7 @@ public class Mathf{
         return val;
     }
 
-    public static int clamp(int number, int min, int max){
+    public static double clamp(double number, double min, double max){
         return Math.max(min, Math.min(max, number));
     }
 

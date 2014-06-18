@@ -3,7 +3,6 @@ package JGame.Game;
 import JGame.Component;
 import JGame.Components.SpriteRenderer;
 import JGame.Components.Transform;
-import JGame.Game.Game;
 import JGame.GameObject;
 import JGame.Util.KeyboardMap;
 import JGame.Util.Mapping;
@@ -80,7 +79,7 @@ public class Room extends JFrame implements Runnable{
             long milliNow = System.currentTimeMillis();
             delta += (now - lastTime) / ns;
             lastTime = now;
-            Time.deltaTime = delta / amountOfTicks;
+            Time.deltaTime = (delta / amountOfTicks) * Time.timeStep;
             Time.time = (milliNow - startTime) / 1000;
             while(delta >= 1){
                 fixedTick();
@@ -153,6 +152,9 @@ public class Room extends JFrame implements Runnable{
         super.paint(g);
         for(GameObject go : gameObjects){
             Image sprite = go.getComponent(SpriteRenderer.class).sprite.getSprite();
+            if(sprite == null){
+                continue;
+            }
             Vector2 pos = go.getComponent(Transform.class).position;
             g.drawImage(sprite, (int)pos.getX(), (int)pos.getY(), this);
         }

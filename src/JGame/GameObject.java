@@ -23,10 +23,8 @@ public class GameObject extends Object{
     public <T extends Component> T addComponent(Class<T> component){
         try{
             T inst = component.newInstance();
+            inst.setGameObject(this);
             this.components.put(component, inst);
-            /*if(component.equals(SpriteRenderer.class)){
-             this.renderer = (SpriteRenderer)inst;
-             }*/
             return inst;
         }catch(InstantiationException | IllegalAccessException ex){
             Logger.getLogger(GameObject.class.getName()).log(Level.SEVERE, null, ex);
