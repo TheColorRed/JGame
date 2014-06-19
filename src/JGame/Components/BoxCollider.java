@@ -1,23 +1,69 @@
 package JGame.Components;
 
+import JGame.Component;
+import JGame.Game.Stage;
+import JGame.GameObject;
 import JGame.Util.Vector2;
 import java.awt.Rectangle;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BoxCollider extends Collider{
 
     private double width = 0, height = 0, x = 0, y = 0;
     private Rectangle rectangle = new Rectangle();
+    private Transform trans;
+    private SpriteRenderer spr;
+    public boolean showCollider = true;
 
     public void start(){
-        Transform trans = gameObject.getComponent(Transform.class);
-        SpriteRenderer rend = gameObject.getComponent(SpriteRenderer.class);
-        this.width = rend.getWidth();
-        this.height = rend.getHeight();
-        this.x = trans.position.getX();
-        this.y = trans.position.getY();
+        this.trans = this.gameObject.getComponent(Transform.class);
+        this.spr = this.gameObject.getComponent(SpriteRenderer.class);
+        this.width = this.spr.getWidth();
+        this.height = this.spr.getHeight();
+        this.x = this.trans.position.getX();
+        this.y = this.trans.position.getY();
         this.resizeRect();
     }
 
+    public void update(){
+        for(GameObject go : Stage.gameObjects){
+            if(go == gameObject){
+                continue;
+            }
+            HashMap<Class, Component> hm = go.getComponents();
+            for(Map.Entry pairs : hm.entrySet()){
+                Component comp = (Component)pairs.getValue();
+                if(comp instanceof Collider){
+                    BoxCollider bx = (BoxCollider)comp;
+                    if(bx.rectangle.intersects(this.rectangle)){
+                        this.sendCollision(gameObject, bx);
+                    }
+                }
+            }
+        }
+    }
+
+    private void sendCollision(GameObject go, Collider collider){
+        HashMap<Class, Component> hm = go.getComponents();
+        for(Map.Entry pairs : hm.entrySet()){
+            Component comp = (Component)pairs.getValue();
+            comp.onCollision(collider);
+        }
+    }
+
+//    private void sendCollision(GameObject gameObject, Collider collider){
+//        for(GameObject go : this.gameObjects){
+//            if(go == gameObject){
+//                continue;
+//            }
+//            HashMap<Class, Component> hm = go.getComponents();
+//            for(Map.Entry pairs : hm.entrySet()){
+//                Component comp = (Component)pairs.getValue();
+//                comp.onCollision(collider);
+//            }
+//        }
+//    }
     public Rectangle getRect(){
         return this.rectangle;
     }

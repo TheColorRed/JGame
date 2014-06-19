@@ -47,6 +47,9 @@ public class Sprite extends Object{
 
     public Sprite setResized(BufferedImage image){
         this.sprite = image;
+        System.err.println(image.getHeight());
+        this.height = image.getHeight();
+        this.width = image.getWidth();
         this.isScaled = true;
         return this;
     }

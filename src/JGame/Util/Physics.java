@@ -1,6 +1,6 @@
 package JGame.Util;
 
-import JGame.Game.Room;
+import JGame.Game.Stage;
 
 public class Physics{
 
@@ -21,11 +21,11 @@ public class Physics{
     }
 
     public double getTime(){
-        return this.time * Room.gameTime;
+        return this.time * Stage.gameTime;
     }
 
     public double getDistance(){
-        return 0.5 * Room.getGravity() * Math.pow(this.getTime(), 2);
+        return 0.5 * Stage.getGravity() * Math.pow(this.getTime(), 2);
     }
 
     public double getHorizontalDistance(){
@@ -34,7 +34,7 @@ public class Physics{
     }
 
     public double getVelocity(){
-        return Room.getGravity() * this.getTime();
+        return Stage.getGravity() * this.getTime();
     }
 
     public double getSpeed(){
@@ -44,7 +44,7 @@ public class Physics{
     public double getVY(){
         //vy = - vbounce - 1/2 g t2
         //double vy = 0 + 0.5 * Room.getGravity() * Math.pow(this.time * Room.gameTime, 2);
-        double vy = (this.getSpeed() - (0.5 * Room.getGravity() * Math.pow(this.getTime(), 2)));
+        double vy = (this.getSpeed() - (0.5 * Stage.getGravity() * Math.pow(this.getTime(), 2)));
         return vy;
     }
 

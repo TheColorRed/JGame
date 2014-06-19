@@ -1,19 +1,19 @@
 package JGame.Events;
 
-import JGame.Game.Room;
+import JGame.Game.Stage;
 import JGame.Util.MouseMap;
 import java.awt.event.MouseListener;
 
 public class MouseEvent{
 
-    Room comp;
+    Stage comp;
     int clickCount = 1;
 
     /**
      *
      * @param comp
      */
-    public MouseEvent(Room comp){
+    public MouseEvent(Stage comp){
         this.comp = comp;
     }
 

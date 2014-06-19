@@ -1,10 +1,9 @@
 package JGame.Components;
 
 import JGame.Behavior;
-import JGame.Util.Mathf;
 import JGame.Util.Vector2;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 public class Transform extends Behavior{
@@ -32,23 +31,21 @@ public class Transform extends Behavior{
     }
 
     public void scale(double x, double y){
-        x = Mathf.clamp(x, 0, 1);
-        y = Mathf.clamp(y, 0, 1);
+        //x = Mathf.clamp(x, 0, 1);
+        //y = Mathf.clamp(y, 0, 1);
         SpriteRenderer spr = gameObject.getComponent(SpriteRenderer.class);
         if(x == 1 && y == 1){
             spr.sprite.setOrigSprite();
             return;
         }
         BufferedImage before = spr.sprite.getSprite();
-        BufferedImage after = new BufferedImage(
-                before.getWidth(),
-                before.getHeight(),
-                BufferedImage.TYPE_INT_ARGB
-        );
-        AffineTransform at = new AffineTransform();
-        at.scale(x, y);
-        AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-        after = scaleOp.filter(before, after);
+        Image tempImg = before.getScaledInstance((int)x, (int)y, BufferedImage.SCALE_SMOOTH);
+        BufferedImage after = new BufferedImage((int)x, (int)y, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D bgr = after.createGraphics();
+        bgr.drawImage(tempImg, 0, 0, null);
+        bgr.dispose();
+
         spr.sprite.setResized(after);
     }
 

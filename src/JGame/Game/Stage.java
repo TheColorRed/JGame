@@ -1,7 +1,6 @@
 package JGame.Game;
 
 import JGame.Component;
-import JGame.Components.BoxCollider;
 import JGame.Components.Collider;
 import JGame.Components.SpriteRenderer;
 import JGame.Components.Transform;
@@ -27,10 +26,10 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-public class Room extends JFrame implements Runnable{
+public class Stage extends JFrame implements Runnable{
 
     protected Image bg;
-    private ArrayList<GameObject> gameObjects = new ArrayList<>();
+    public static ArrayList<GameObject> gameObjects = new ArrayList<>();
     protected int width = Game.width, height = Game.height;
     public static int CENTERX = 0, CENTERY = 0;
     private BufferedImage dbImage;
@@ -46,7 +45,7 @@ public class Room extends JFrame implements Runnable{
     public double fixedTimeStep = 0.02;
     protected boolean started = false;
 
-    public Room(){
+    public Stage(){
         super("Game");
         this.setSize(800, 600);
         this.setUndecorated(true);
@@ -102,7 +101,7 @@ public class Room extends JFrame implements Runnable{
     }
 
     // Starts
-    protected void startComponents(GameObject gameObject){
+    protected static void startComponents(GameObject gameObject){
         HashMap<Class, Component> hm = gameObject.getComponents();
         for(Map.Entry pairs : hm.entrySet()){
             Component comp = (Component)pairs.getValue();
@@ -138,8 +137,8 @@ public class Room extends JFrame implements Runnable{
                 }
                 //System.out.println(comp.getClass().getName());
                 if(comp instanceof Collider){
-                    ((BoxCollider)comp).isCollision = false;
-                    this.testCollisions(go, (Collider)comp);
+                    //((BoxCollider)comp).isCollision = false;
+                    //this.testCollisions(go, (Collider)comp);
                 }
                 comp.fixedUpdate();
             }
@@ -168,43 +167,9 @@ public class Room extends JFrame implements Runnable{
         Toolkit.getDefaultToolkit().sync();
     }
 
-    public void addGameObject(GameObject gameObject){
+    public static void addGameObject(GameObject gameObject){
         gameObjects.add(gameObject);
-        this.startComponents(gameObject);
-    }
-
-    private void testCollisions(GameObject gameObject, Collider collider){
-        for(GameObject go : this.gameObjects){
-            if(go == gameObject){
-                continue;
-            }
-            HashMap<Class, Component> hm = go.getComponents();
-            for(Map.Entry pairs : hm.entrySet()){
-                Component comp = (Component)pairs.getValue();
-                if(comp instanceof BoxCollider && collider instanceof BoxCollider){
-                    ((BoxCollider)comp).isCollision = false;
-                    ((BoxCollider)collider).isCollision = false;
-                    if(((BoxCollider)comp).getRect().intersects(((BoxCollider)collider).getRect())){
-                        ((BoxCollider)comp).isCollision = true;
-                        ((BoxCollider)collider).isCollision = true;
-                        this.sendCollision(gameObject, collider);
-                    }
-                }
-            }
-        }
-    }
-
-    private void sendCollision(GameObject gameObject, Collider collider){
-        for(GameObject go : this.gameObjects){
-            if(go == gameObject){
-                continue;
-            }
-            HashMap<Class, Component> hm = go.getComponents();
-            for(Map.Entry pairs : hm.entrySet()){
-                Component comp = (Component)pairs.getValue();
-                comp.onCollision(collider);
-            }
-        }
+        startComponents(gameObject);
     }
 
     /*
@@ -391,8 +356,8 @@ public class Room extends JFrame implements Runnable{
         this.width = width;
         this.height = height;
 
-        Room.CENTERX = (int)(this.width / 2.0);
-        Room.CENTERY = (int)(this.height / 2.0);
+        Stage.CENTERX = (int)(this.width / 2.0);
+        Stage.CENTERY = (int)(this.height / 2.0);
     }
 
     /**
@@ -500,11 +465,11 @@ public class Room extends JFrame implements Runnable{
     }
 
     public void setGravity(float gravity){
-        Room.gravity = gravity;
+        Stage.gravity = gravity;
     }
 
     public static float getGravity(){
-        return Room.gravity;
+        return Stage.gravity;
     }
 
     public long getTickCount(){

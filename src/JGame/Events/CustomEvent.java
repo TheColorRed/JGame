@@ -1,13 +1,13 @@
 package JGame.Events;
 
-import JGame.Game.Room;
+import JGame.Game.Stage;
 import JGame.Util.CustomEventMap;
 
 public class CustomEvent{
 
-    Room comp;
+    Stage comp;
 
-    public CustomEvent(Room comp){
+    public CustomEvent(Stage comp){
         this.comp = comp;
     }
 
