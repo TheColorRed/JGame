@@ -28,6 +28,7 @@ public class BoxCollider extends Collider{
 
     public void setHeight(double height){
         this.height = height;
+        this.resizeRect();
     }
 
     public double getWidth(){
@@ -36,6 +37,7 @@ public class BoxCollider extends Collider{
 
     public void setWidth(double width){
         this.width = width;
+        this.resizeRect();
     }
 
     public double getX(){
@@ -44,6 +46,7 @@ public class BoxCollider extends Collider{
 
     public void setX(double x){
         this.x = x;
+        this.resizeRect();
     }
 
     public double getY(){
@@ -52,6 +55,7 @@ public class BoxCollider extends Collider{
 
     public void setY(double y){
         this.y = y;
+        this.resizeRect();
     }
 
     public BoxCollider setSize(double width, double height){

@@ -183,10 +183,24 @@ public class Room extends JFrame implements Runnable{
                 Component comp = (Component)pairs.getValue();
                 if(comp instanceof BoxCollider && collider instanceof BoxCollider){
                     if(((BoxCollider)comp).getRect().intersects(((BoxCollider)collider).getRect())){
-                        comp.onCollision(collider);
-                        collider.onCollision((Collider)comp);
+                        this.sendCollision(gameObject, collider);
+                        //comp.onCollision(collider);
+                        //collider.onCollision((Collider)comp);
                     }
                 }
+            }
+        }
+    }
+
+    private void sendCollision(GameObject gameObject, Collider collider){
+        for(GameObject go : this.gameObjects){
+            if(go == gameObject){
+                continue;
+            }
+            HashMap<Class, Component> hm = go.getComponents();
+            for(Map.Entry pairs : hm.entrySet()){
+                Component comp = (Component)pairs.getValue();
+                comp.onCollision(collider);
             }
         }
     }

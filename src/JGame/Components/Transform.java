@@ -13,6 +13,12 @@ public class Transform extends Behavior{
 
     public void translate(double x, double y){
         position = new Vector2(position.getX() + x, position.getY() + y);
+        BoxCollider boxCollider = this.gameObject.getComponent(BoxCollider.class);
+        if(boxCollider != null){
+            Transform trans = this.gameObject.getComponent(Transform.class);
+            boxCollider.setX(trans.position.getX());
+            boxCollider.setY(trans.position.getY());
+        }
     }
 
     public void scale(double x, double y){
