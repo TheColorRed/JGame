@@ -21,6 +21,16 @@ public class Transform extends Behavior{
         }
     }
 
+    public void setPosition(double x, double y){
+        position = new Vector2(x, y);
+        BoxCollider boxCollider = this.gameObject.getComponent(BoxCollider.class);
+        if(boxCollider != null){
+            Transform trans = this.gameObject.getComponent(Transform.class);
+            boxCollider.setX(trans.position.getX());
+            boxCollider.setY(trans.position.getY());
+        }
+    }
+
     public void scale(double x, double y){
         x = Mathf.clamp(x, 0, 1);
         y = Mathf.clamp(y, 0, 1);

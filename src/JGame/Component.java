@@ -20,8 +20,8 @@ public class Component extends Object{
         this.transform = gameObject.getComponent(Transform.class);
         this.renderer = gameObject.getComponent(SpriteRenderer.class);
         this.rigidbody = gameObject.getComponent(Rigidbody.class);
-        this.boxCollider = gameObject.getComponent(BoxCollider.class);
-        this.circleCollider = gameObject.getComponent(CircleCollider.class);
+        this.boxCollider = (BoxCollider)gameObject.getComponent(BoxCollider.class);
+        this.circleCollider = (CircleCollider)gameObject.getComponent(CircleCollider.class);
     }
 
     public boolean hasCollider(){

@@ -44,6 +44,7 @@ public class Room extends JFrame implements Runnable{
     public double delta = 0;
     private BufferStrategy bufferStrategy;
     public double fixedTimeStep = 0.02;
+    protected boolean started = false;
 
     public Room(){
         super("Game");
@@ -56,7 +57,6 @@ public class Room extends JFrame implements Runnable{
     }
 
     public synchronized void start(){
-        startComponents();
         Thread thread = new Thread(this);
         thread.start();
     }
@@ -102,16 +102,14 @@ public class Room extends JFrame implements Runnable{
     }
 
     // Starts
-    protected void startComponents(){
-        for(GameObject go : this.gameObjects){
-            HashMap<Class, Component> hm = go.getComponents();
-            for(Map.Entry pairs : hm.entrySet()){
-                Component comp = (Component)pairs.getValue();
-                if(comp.gameObject == null){
-                    comp.setGameObject(go);
-                }
-                comp.start();
+    protected void startComponents(GameObject gameObject){
+        HashMap<Class, Component> hm = gameObject.getComponents();
+        for(Map.Entry pairs : hm.entrySet()){
+            Component comp = (Component)pairs.getValue();
+            if(comp.gameObject == null){
+                comp.setGameObject(gameObject);
             }
+            comp.start();
         }
     }
 
@@ -140,6 +138,7 @@ public class Room extends JFrame implements Runnable{
                 }
                 //System.out.println(comp.getClass().getName());
                 if(comp instanceof Collider){
+                    ((BoxCollider)comp).isCollision = false;
                     this.testCollisions(go, (Collider)comp);
                 }
                 comp.fixedUpdate();
@@ -171,6 +170,7 @@ public class Room extends JFrame implements Runnable{
 
     public void addGameObject(GameObject gameObject){
         gameObjects.add(gameObject);
+        this.startComponents(gameObject);
     }
 
     private void testCollisions(GameObject gameObject, Collider collider){
@@ -182,10 +182,12 @@ public class Room extends JFrame implements Runnable{
             for(Map.Entry pairs : hm.entrySet()){
                 Component comp = (Component)pairs.getValue();
                 if(comp instanceof BoxCollider && collider instanceof BoxCollider){
+                    ((BoxCollider)comp).isCollision = false;
+                    ((BoxCollider)collider).isCollision = false;
                     if(((BoxCollider)comp).getRect().intersects(((BoxCollider)collider).getRect())){
+                        ((BoxCollider)comp).isCollision = true;
+                        ((BoxCollider)collider).isCollision = true;
                         this.sendCollision(gameObject, collider);
-                        //comp.onCollision(collider);
-                        //collider.onCollision((Collider)comp);
                     }
                 }
             }
