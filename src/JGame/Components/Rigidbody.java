@@ -36,7 +36,6 @@ public class Rigidbody extends Behavior{
             //this.trans.position = new Vector2(600, y);
             x = 600;
             this.dx = -this.dx;
-            System.out.println(x + ":" + this.dx);
         }else if(x + this.dx < 0){
             x = 0;
             this.dx = -this.dx;
