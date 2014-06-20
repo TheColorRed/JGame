@@ -2,6 +2,8 @@ package JGame.Components;
 
 import JGame.Behavior;
 import JGame.Util.Time;
+// See:
+// http://stackoverflow.com/questions/18704999/how-to-fix-circle-and-rectangle-overlap-in-collision-response/18790389#18790389
 
 public class Rigidbody extends Behavior{
 
