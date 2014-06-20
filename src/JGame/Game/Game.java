@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 
 public class Game extends JFrame{
 
-    protected Room[] rooms = new Room[10];
+    protected Stage[] rooms = new Stage[10];
     public static int CENTERX = 0, CENTERY = 0;
     public static int width = 0, height = 0;
 
@@ -50,7 +50,7 @@ public class Game extends JFrame{
         Game.CENTERY = (int)(height / 2.0);
     }
 
-    public void setRoom(Room room){
+    public void setStage(Stage room){
         room.setSize(Game.width, Game.height);
         room.setPreferredSize(new Dimension(Game.width, Game.height));
         rooms[0] = room;

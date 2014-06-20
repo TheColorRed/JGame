@@ -1,6 +1,5 @@
 package JGame;
 
-import JGame.Components.Collider;
 import JGame.Components.SpriteRenderer;
 import JGame.Components.Transform;
 import java.util.HashMap;
