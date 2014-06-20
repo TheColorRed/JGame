@@ -37,6 +37,9 @@ public class BoxCollider extends Collider{
                 if(comp instanceof Collider){
                     BoxCollider bx = (BoxCollider)comp;
                     if(bx.rectangle.intersects(this.rectangle)){
+                        //System.err.println(bx.rectangle.x);
+                        //System.out.println(bx.rectangle.intersection(this.rectangle).x);
+                        //System.out.println(bx.rectangle.intersection(this.rectangle).y);
                         this.sendCollision(gameObject, bx);
                     }
                 }
