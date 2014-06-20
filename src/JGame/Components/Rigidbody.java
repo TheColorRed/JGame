@@ -5,11 +5,11 @@ import JGame.Util.Time;
 
 public class Rigidbody extends Behavior{
 
-    public double gravity = 1;
-    public double energyLoss = .75;
-    public double dy = 50, dx = 30;
-    public double y = 0, x = 0;
-    public double xFriction = 0.80;
+    private double gravity = 1, mass = 1;
+    private double energyLoss = .75;
+    private double dy = .1, dx = 0;
+    private double y = 0, x = 0;
+    private double xFriction = 0.80;
 
     protected Transform trans;
     protected SpriteRenderer spr;
@@ -30,41 +30,57 @@ public class Rigidbody extends Behavior{
     public void onCollision(Collider other){
         Transform otherTrans = other.gameObject.getComponent(Transform.class);
         SpriteRenderer otherRenderer = other.gameObject.getComponent(SpriteRenderer.class);
-        BoxCollider bxColl = other.gameObject.getComponent(BoxCollider.class);
-
-        int collisionX = bxColl.getRect().intersection(bxCollider.getRect()).x;
-        int collisionY = bxColl.getRect().intersection(bxCollider.getRect()).y;
+        Rigidbody otherRigidbody = other.gameObject.getComponent(Rigidbody.class);
 
         double centerX = transform.position.getX() + renderer.getWidth() / 2;
         double centerY = transform.position.getY() + renderer.getHeight() / 2;
         double otherCenterX = otherTrans.position.getX() + otherRenderer.getWidth() / 2;
         double otherCenterY = otherTrans.position.getY() + otherRenderer.getHeight() / 2;
-
-        double wy = (renderer.getWidth() + otherRenderer.getWidth()) * (centerY - otherCenterY);
-        double hx = (renderer.getHeight() + otherRenderer.getHeight()) * (centerX - otherCenterX);
+        double ovke = 0, ohke = 0, hke = 0, vke = 0;
+        if(otherRigidbody != null){
+            double otherVForce = otherRigidbody.getVerticalForce();
+            double otherHForce = otherRigidbody.getHorizontalForce();
+            double otherMass = otherRigidbody.getMass();
+            vke = 0.5 * this.mass * Math.abs(this.dy) * Math.abs(this.dy);
+            ovke = 0.5 * otherMass * Math.abs(otherVForce) * Math.abs(otherVForce);
+            hke = 0.5 * this.mass * this.dx * this.dx;
+            ohke = 0.5 * otherMass * Math.abs(otherHForce) * Math.abs(otherHForce);
+        }
 
         if(centerY <= otherCenterY - (otherRenderer.getHeight() / 2)){
             //System.out.println("Bottom");
             this.y = otherTrans.position.getY() - renderer.getHeight() - 1;
+            if(otherRigidbody != null){
+                this.dy += (ovke / vke);
+            }
             this.dy *= this.energyLoss;
             this.dy = -this.dy;
-            if(Math.abs(this.dy) < .1){
-                this.dy = 0;
-            }
         }else if(centerY >= otherCenterY + (otherRenderer.getHeight() / 2)){
             //System.out.println("Top");
             this.y = otherTrans.position.getY() + otherRenderer.getHeight() + 1;
+            if(otherRigidbody != null){
+                this.dy += -(ovke / vke);
+            }
             this.dy = -this.dy;
         }else if(centerX < otherCenterX){
             //System.out.println("Right");
             this.x = otherTrans.position.getX() - renderer.getWidth() - 1;
+            if(otherRigidbody != null){
+                this.dx += (ohke / hke);
+            }
             this.dx *= this.energyLoss;
             this.dx = -this.dx;
         }else if(centerX > otherCenterX){
             //System.out.println("Left");
             this.x = otherTrans.position.getX() + otherRenderer.getWidth() + 1;
+            if(otherRigidbody != null){
+                this.dx += (ohke / hke);
+            }
             this.dx *= this.energyLoss;
             this.dx = -this.dx;
+        }
+        if(Math.abs(this.dy) < .9){
+            this.dy = 0;
         }
         // Friction
         if(transform.position.getY() + renderer.getHeight() >= otherTrans.position.getY() - 1){
@@ -73,14 +89,61 @@ public class Rigidbody extends Behavior{
                 this.dx = 0;
             }
         }
-
     }
 
     public void update(){
         double delta = Time.deltaTime;
         x += this.dx * delta;
-        this.dy += this.gravity * delta;
-        y += this.dy * delta + 0.5 * this.gravity * delta * delta;
+        this.dy += this.getGravity() * delta;
+        y += this.dy * delta + 0.5 * this.getGravity() * delta * delta;
         this.trans.setPosition(x, y);
+    }
+
+    public void setEnergyLoss(double amount){
+        this.energyLoss = amount;
+    }
+
+    public void setFriction(double friction){
+        this.xFriction = friction;
+    }
+
+    public void setVerticalForce(double force){
+        this.dy = force;
+    }
+
+    public void setHorizontalForce(double force){
+        this.dx = force;
+    }
+
+    public double getEnergyLoss(){
+        return this.energyLoss;
+    }
+
+    public double getFriction(){
+        return this.xFriction;
+    }
+
+    public double getVerticalForce(){
+        return this.dy;
+    }
+
+    public double getHorizontalForce(){
+        return this.dx;
+    }
+
+    public double getGravity(){
+        return gravity;
+    }
+
+    public void setGravity(double gravity){
+        this.gravity = gravity;
+    }
+
+    public double getMass(){
+        return mass;
+    }
+
+    public void setMass(double mass){
+        this.mass = mass;
     }
 }

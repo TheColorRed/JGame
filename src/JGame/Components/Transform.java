@@ -10,7 +10,7 @@ public class Transform extends Behavior{
 
     public Vector2 position = new Vector2(0, 0);
 
-    public void translate(double x, double y){
+    public Transform translate(double x, double y){
         position = new Vector2(position.getX() + x, position.getY() + y);
         BoxCollider boxCollider = this.gameObject.getComponent(BoxCollider.class);
         if(boxCollider != null){
@@ -18,9 +18,10 @@ public class Transform extends Behavior{
             boxCollider.setX(trans.position.getX());
             boxCollider.setY(trans.position.getY());
         }
+        return this;
     }
 
-    public void setPosition(double x, double y){
+    public Transform setPosition(double x, double y){
         position = new Vector2(x, y);
         BoxCollider boxCollider = this.gameObject.getComponent(BoxCollider.class);
         if(boxCollider != null){
@@ -28,15 +29,16 @@ public class Transform extends Behavior{
             boxCollider.setX(trans.position.getX());
             boxCollider.setY(trans.position.getY());
         }
+        return this;
     }
 
-    public void scale(double x, double y){
+    public Transform scale(double x, double y){
         //x = Mathf.clamp(x, 0, 1);
         //y = Mathf.clamp(y, 0, 1);
         SpriteRenderer spr = gameObject.getComponent(SpriteRenderer.class);
         if(x == 1 && y == 1){
             spr.sprite.setOrigSprite();
-            return;
+            return this;
         }
         BufferedImage before = spr.sprite.getSprite();
         Image tempImg = before.getScaledInstance((int)x, (int)y, BufferedImage.SCALE_SMOOTH);
@@ -47,6 +49,7 @@ public class Transform extends Behavior{
         bgr.dispose();
 
         spr.sprite.setResized(after);
+        return this;
     }
 
     public void rotate(double rotation){
