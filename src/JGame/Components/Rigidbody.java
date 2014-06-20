@@ -39,45 +39,45 @@ public class Rigidbody extends Behavior{
         double otherCenterX = otherTrans.position.getX() + otherRenderer.getWidth() / 2;
         double otherCenterY = otherTrans.position.getY() + otherRenderer.getHeight() / 2;
         double ovke = 0, ohke = 0, hke = 0, vke = 0;
-        if(otherRigidbody != null){
-            double otherVForce = otherRigidbody.getVerticalForce();
-            double otherHForce = otherRigidbody.getHorizontalForce();
-            double otherMass = otherRigidbody.getMass();
-            vke = 0.5 * this.mass * Math.abs(this.dy) * Math.abs(this.dy);
-            ovke = 0.5 * otherMass * Math.abs(otherVForce) * Math.abs(otherVForce);
-            hke = 0.5 * this.mass * this.dx * this.dx;
-            ohke = 0.5 * otherMass * Math.abs(otherHForce) * Math.abs(otherHForce);
-        }
+//        if(otherRigidbody != null){
+//            double otherVForce = otherRigidbody.getVerticalForce();
+//            double otherHForce = otherRigidbody.getHorizontalForce();
+//            double otherMass = otherRigidbody.getMass();
+//            vke = 0.5 * this.mass * Math.abs(this.dy) * Math.abs(this.dy);
+//            ovke = 0.5 * otherMass * Math.abs(otherVForce) * Math.abs(otherVForce);
+//            hke = 0.5 * this.mass * this.dx * this.dx;
+//            ohke = 0.5 * otherMass * Math.abs(otherHForce) * Math.abs(otherHForce);
+//        }
 
         if(centerY <= otherCenterY - (otherRenderer.getHeight() / 2)){
             //System.out.println("Bottom");
             this.y = otherTrans.position.getY() - renderer.getHeight() - 1;
-            if(otherRigidbody != null){
-                this.dy += (ovke / vke);
-            }
+//            if(otherRigidbody != null){
+//                this.dy += (ovke / vke);
+//            }
             this.dy *= this.energyLoss;
             this.dy = -this.dy;
         }else if(centerY >= otherCenterY + (otherRenderer.getHeight() / 2)){
             //System.out.println("Top");
             this.y = otherTrans.position.getY() + otherRenderer.getHeight() + 1;
-            if(otherRigidbody != null){
-                this.dy += -(ovke / vke);
-            }
+//            if(otherRigidbody != null){
+//                this.dy += -(ovke / vke);
+//            }
             this.dy = -this.dy;
         }else if(centerX < otherCenterX){
             //System.out.println("Right");
             this.x = otherTrans.position.getX() - renderer.getWidth() - 1;
-            if(otherRigidbody != null){
-                this.dx += (ohke / hke);
-            }
+//            if(otherRigidbody != null){
+//                this.dx += (ohke / hke);
+//            }
             this.dx *= this.energyLoss;
             this.dx = -this.dx;
         }else if(centerX > otherCenterX){
             //System.out.println("Left");
             this.x = otherTrans.position.getX() + otherRenderer.getWidth() + 1;
-            if(otherRigidbody != null){
-                this.dx += (ohke / hke);
-            }
+//            if(otherRigidbody != null){
+//                this.dx += (ohke / hke);
+//            }
             this.dx *= this.energyLoss;
             this.dx = -this.dx;
         }
