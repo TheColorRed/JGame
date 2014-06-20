@@ -35,49 +35,36 @@ public class Rigidbody extends Behavior{
         int collisionX = bxColl.getRect().intersection(bxCollider.getRect()).x;
         int collisionY = bxColl.getRect().intersection(bxCollider.getRect()).y;
 
-//        System.out.println(collisionX <= transform.position.getX() + renderer.getWidth() - 1);
-//        System.out.println(collisionY <= transform.position.getY() + renderer.getHeight() - 1);
-//        System.out.println(collisionX >= transform.position.getX() - 1);
-//        System.out.println(collisionY >= transform.position.getY() - 1);
-//        System.out.println("Next");
-        // Left/Right Movement
-        if(collisionX < transform.position.getX() + renderer.getWidth() + 1
-                && collisionY < transform.position.getY() + renderer.getHeight() - 1
-                && collisionX > transform.position.getX() + 1
-                && collisionY < transform.position.getY() + 1){
-            System.out.println("Right");
-            this.x = otherTrans.position.getX() - renderer.getWidth() - 1;
-            this.dx *= this.energyLoss;
-            this.dx = -this.dx;
-        }else if(collisionX < transform.position.getX() + renderer.getWidth() - 1
-                && collisionY < transform.position.getY() + renderer.getHeight() - 1
-                && collisionX > transform.position.getX() - 1
-                && collisionY < transform.position.getY() + 1){
-            System.out.println("Left");
-            this.x = otherTrans.position.getX() + otherRenderer.getWidth() + 1;
-            this.dx *= this.energyLoss;
-            this.dx = -this.dx;
-        } // Up/down Movement
-        else if(collisionX <= transform.position.getX() + renderer.getWidth() - 1
-                && collisionY <= transform.position.getY() + renderer.getHeight() - 1
-                && collisionX >= transform.position.getX() - 1
-                && collisionY >= transform.position.getY() - 1
-                && this.dy > 0){
-            System.out.println("Bottom");
+        double centerX = transform.position.getX() + renderer.getWidth() / 2;
+        double centerY = transform.position.getY() + renderer.getHeight() / 2;
+        double otherCenterX = otherTrans.position.getX() + otherRenderer.getWidth() / 2;
+        double otherCenterY = otherTrans.position.getY() + otherRenderer.getHeight() / 2;
+
+        double wy = (renderer.getWidth() + otherRenderer.getWidth()) * (centerY - otherCenterY);
+        double hx = (renderer.getHeight() + otherRenderer.getHeight()) * (centerX - otherCenterX);
+
+        if(centerY <= otherCenterY - (otherRenderer.getHeight() / 2)){
+            //System.out.println("Bottom");
             this.y = otherTrans.position.getY() - renderer.getHeight() - 1;
             this.dy *= this.energyLoss;
             this.dy = -this.dy;
             if(Math.abs(this.dy) < .1){
                 this.dy = 0;
             }
-        }else if(collisionX <= transform.position.getX() + renderer.getWidth() - 1
-                && collisionY <= transform.position.getY() + renderer.getHeight() - 1
-                && collisionX >= transform.position.getX() - 1
-                && collisionY >= transform.position.getY() - 1
-                && this.dy < 0){
-            System.out.println("Top");
+        }else if(centerY >= otherCenterY + (otherRenderer.getHeight() / 2)){
+            //System.out.println("Top");
             this.y = otherTrans.position.getY() + otherRenderer.getHeight() + 1;
             this.dy = -this.dy;
+        }else if(centerX < otherCenterX){
+            //System.out.println("Right");
+            this.x = otherTrans.position.getX() - renderer.getWidth() - 1;
+            this.dx *= this.energyLoss;
+            this.dx = -this.dx;
+        }else if(centerX > otherCenterX){
+            //System.out.println("Left");
+            this.x = otherTrans.position.getX() + otherRenderer.getWidth() + 1;
+            this.dx *= this.energyLoss;
+            this.dx = -this.dx;
         }
         // Friction
         if(transform.position.getY() + renderer.getHeight() >= otherTrans.position.getY() - 1){
