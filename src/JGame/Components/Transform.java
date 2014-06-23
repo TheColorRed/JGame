@@ -1,6 +1,7 @@
 package JGame.Components;
 
 import JGame.Behavior;
+import JGame.Util.PivotPoints;
 import JGame.Util.Vector2;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -8,26 +9,39 @@ import java.awt.image.BufferedImage;
 
 public class Transform extends Behavior{
 
-    public Vector2 position = new Vector2(0, 0);
+    protected Vector2 position = new Vector2(0, 0);
+
+    public Transform setPosition(Vector2 position){
+        this.setPosition(position.x, position.y);
+        return this;
+    }
+
+    public Vector2 getPosition(){
+        return this.position;
+    }
 
     public Transform translate(double x, double y){
-        position = new Vector2(position.getX() + x, position.getY() + y);
+        position = new Vector2(position.x + x, position.y + y);
         BoxCollider boxCollider = this.gameObject.getComponent(BoxCollider.class);
         if(boxCollider != null){
             Transform trans = this.gameObject.getComponent(Transform.class);
-            boxCollider.setX(trans.position.getX());
-            boxCollider.setY(trans.position.getY());
+            boxCollider.setX(trans.position.x);
+            boxCollider.setY(trans.position.y);
         }
         return this;
     }
 
     public Transform setPosition(double x, double y){
-        position = new Vector2(x, y);
+        Transform trans = this.gameObject.getComponent(Transform.class);
+        SpriteRenderer spr = this.gameObject.getComponent(SpriteRenderer.class);
+        if(spr.pivotPoint == null){
+            spr.setPivotPoint(PivotPoints.Center);
+        }
+        this.position = new Vector2(x, y).subtract(spr.pivotPoint);
         BoxCollider boxCollider = this.gameObject.getComponent(BoxCollider.class);
         if(boxCollider != null){
-            Transform trans = this.gameObject.getComponent(Transform.class);
-            boxCollider.setX(trans.position.getX());
-            boxCollider.setY(trans.position.getY());
+            boxCollider.setX(trans.position.x);
+            boxCollider.setY(trans.position.y);
         }
         return this;
     }

@@ -21,8 +21,8 @@ public class BoxCollider extends Collider{
         this.spr = this.gameObject.getComponent(SpriteRenderer.class);
         this.width = this.spr.getWidth();
         this.height = this.spr.getHeight();
-        this.x = this.trans.position.getX();
-        this.y = this.trans.position.getY();
+        this.x = this.trans.position.x - spr.pivotPoint.x;
+        this.y = this.trans.position.y - spr.pivotPoint.y;
         this.resizeRect();
     }
 
@@ -37,9 +37,6 @@ public class BoxCollider extends Collider{
                 if(comp instanceof Collider){
                     BoxCollider bx = (BoxCollider)comp;
                     if(bx.rectangle.intersects(this.rectangle)){
-                        //System.err.println(bx.rectangle.x);
-                        //System.out.println(bx.rectangle.intersection(this.rectangle).x);
-                        //System.out.println(bx.rectangle.intersection(this.rectangle).y);
                         this.sendCollision(gameObject, bx);
                     }
                 }
@@ -55,18 +52,6 @@ public class BoxCollider extends Collider{
         }
     }
 
-//    private void sendCollision(GameObject gameObject, Collider collider){
-//        for(GameObject go : this.gameObjects){
-//            if(go == gameObject){
-//                continue;
-//            }
-//            HashMap<Class, Component> hm = go.getComponents();
-//            for(Map.Entry pairs : hm.entrySet()){
-//                Component comp = (Component)pairs.getValue();
-//                comp.onCollision(collider);
-//            }
-//        }
-//    }
     public Rectangle getRect(){
         return this.rectangle;
     }
@@ -116,16 +101,18 @@ public class BoxCollider extends Collider{
 
     public BoxCollider setOffset(double x, double y){
         Vector2 position = this.gameObject.getComponent(Transform.class).position;
-        this.x = position.getX() + x;
-        this.y = position.getY() + y;
+        this.x = position.x + x;
+        this.y = position.x + y;
         this.resizeRect();
         return this;
     }
 
     private void resizeRect(){
+        SpriteRenderer spr = this.gameObject.getComponent(SpriteRenderer.class);
         this.rectangle.width = (int)this.width;
         this.rectangle.height = (int)this.height;
-        this.rectangle.x = (int)this.x;
+        this.rectangle.x = (int)this.x;// - (int)spr.pivotPoint.x;
+        //System.out.println(this.y + ":" + pivotPoint.y + ":" + this.rectangle.y);
         this.rectangle.y = (int)this.y;
     }
 }

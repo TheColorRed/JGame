@@ -1,19 +1,22 @@
 package JGame;
 
+import JGame.Components.Audio;
 import JGame.Components.BoxCollider;
 import JGame.Components.CircleCollider;
 import JGame.Components.Collider;
 import JGame.Components.Rigidbody;
 import JGame.Components.SpriteRenderer;
 import JGame.Components.Transform;
+import JGame.Util.Vector2;
 
 public class Component extends Object{
 
-    public SpriteRenderer renderer;
-    public Transform transform;
+    public Audio audio;
+    public Collider boxCollider, circleCollider;
     public GameObject gameObject;
     public Rigidbody rigidbody;
-    public Collider boxCollider, circleCollider;
+    public SpriteRenderer renderer;
+    public Transform transform;
 
     public void setGameObject(GameObject gameObject){
         this.gameObject = gameObject;
@@ -22,6 +25,8 @@ public class Component extends Object{
         this.rigidbody = gameObject.getComponent(Rigidbody.class);
         this.boxCollider = (BoxCollider)gameObject.getComponent(BoxCollider.class);
         this.circleCollider = (CircleCollider)gameObject.getComponent(CircleCollider.class);
+        this.audio = (Audio)gameObject.getComponent(Audio.class);
+
     }
 
     public boolean hasCollider(){

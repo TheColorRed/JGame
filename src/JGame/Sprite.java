@@ -1,6 +1,7 @@
 package JGame;
 
 import JGame.Components.SpriteRenderer;
+import JGame.Util.Vector2;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -16,6 +17,7 @@ public class Sprite extends Object{
     public boolean isScaled = false;
     private BufferedImage sprite, origSprite;
     private int width = 0, height = 0;
+    private Vector2 pivotPoint = new Vector2(0, 0);
 
     public int getHeight(){
         return this.height;

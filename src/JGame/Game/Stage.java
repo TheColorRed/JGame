@@ -1,6 +1,7 @@
 package JGame.Game;
 
 import JGame.Component;
+import JGame.Components.BoxCollider;
 import JGame.Components.Collider;
 import JGame.Components.SpriteRenderer;
 import JGame.Components.Transform;
@@ -11,10 +12,12 @@ import JGame.Util.MouseMap;
 import JGame.Util.Time;
 import JGame.Util.TimeRegulator;
 import JGame.Util.Vector2;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -44,10 +47,11 @@ public class Stage extends JFrame implements Runnable{
     private BufferStrategy bufferStrategy;
     public double fixedTimeStep = 0.02;
     protected boolean started = false;
+    protected static boolean debug = false;
 
     public Stage(){
         super("Game");
-        this.setSize(800, 600);
+        this.setSize(1024, 800);
         this.setUndecorated(true);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -152,15 +156,25 @@ public class Stage extends JFrame implements Runnable{
             this.createBufferStrategy(3);
             bufferStrategy = this.getBufferStrategy();
         }
-        Graphics g = bufferStrategy.getDrawGraphics();
+        Graphics2D g = (Graphics2D)bufferStrategy.getDrawGraphics();
         super.paint(g);
         for(GameObject go : gameObjects){
             Image sprite = go.getComponent(SpriteRenderer.class).getSprite();
             if(sprite == null){
                 continue;
             }
-            Vector2 pos = go.getComponent(Transform.class).position;
-            g.drawImage(sprite, (int)pos.getX(), (int)pos.getY(), this);
+            Vector2 pos = go.getComponent(Transform.class).getPosition();
+            g.drawImage(sprite, (int)pos.x, (int)pos.y, this);
+            Rectangle rect = go.getComponent(BoxCollider.class).getRect();
+            if(rect != null && Stage.debug){
+                SpriteRenderer spr = go.getComponent(SpriteRenderer.class);
+                g.setColor(Color.green);
+                g.setStroke(new BasicStroke(1));
+                g.drawRect(rect.x, rect.y, rect.width, rect.height);
+                g.setColor(Color.blue);
+                g.setStroke(new BasicStroke(3));
+                g.drawOval(rect.x - 5 + (int)spr.getPivotPoint().x, rect.y + (int)spr.getPivotPoint().y - 5, 10, 10);
+            }
         }
         g.dispose();
         bufferStrategy.show();
@@ -170,6 +184,10 @@ public class Stage extends JFrame implements Runnable{
     public static void addGameObject(GameObject gameObject){
         gameObjects.add(gameObject);
         startComponents(gameObject);
+    }
+
+    public static void setDebug(boolean debug){
+        Stage.debug = debug;
     }
 
     /*
